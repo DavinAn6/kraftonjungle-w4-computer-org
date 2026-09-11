@@ -37,6 +37,21 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer to the linked list:
+	- "Input an integer that you want to add to the linked list"
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Move all odd integers to the back of the linked list:
+	- moveOddItemsToBack(&ll);
+
+0: Quit:
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	LinkedList ll;
@@ -84,9 +99,39 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void moveOddItemsToBack(LinkedList *ll)
-{
-	/* add your code here */
+
+/* REQUIREMENTS
+	- Move all odd integers to the back of the linked list
+	- Input : 2, 3, 4, 7, 15, 18
+	- Output : 2, 4, 18, 3, 7, 15
+*/
+void moveOddItemsToBack(LinkedList *ll) {
+	ListNode *current = ll->head;
+	ListNode *last = ll->head;
+	while (last->next != NULL) {
+		last = last->next;
+	}
+
+	// Check if head is odd first
+	if (current->item % 2 == 1) {
+		last->next = current;
+		ll->head = current->next;
+		current->next = NULL;
+		last = last->next;
+	}
+
+	for (int i = 1; i < ll->size-1; i++) {	
+		// Only iterates until second to last node.
+		// Last node need not be checked since it's already last
+		if (current->next->item % 2 == 1) {
+			last->next = current->next;
+			current->next = current->next->next;
+			last->next->next = NULL;	
+			last = last->next;
+		} else {
+			current = current->next;
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
