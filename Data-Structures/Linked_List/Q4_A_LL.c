@@ -37,6 +37,21 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer to the linked list:
+	- "Input an integer that you want to add to the linked list"
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Move all even integers to the back of the linked list:
+	- moveOddItemsToBack(&ll);
+
+0: Quit:
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	LinkedList ll;
@@ -84,9 +99,40 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void moveEvenItemsToBack(LinkedList *ll)
-{
-	/* add your code here */
+void moveEvenItemsToBack(LinkedList *ll) {
+	ListNode *current = ll->head;
+	ListNode *last = ll->head;
+	while (last->next != NULL) {
+		last = last->next;
+	}
+
+	int checkHead = 1;
+
+	for (int i = 0; i < ll->size; i++) {
+		if (checkHead == 1) {
+			if (current->item % 2 == 0) {
+				last->next = current;
+				ll->head = current->next;
+				current = current->next;
+				last = last->next;
+				last->next = NULL;
+				printList(ll);
+			} else {
+				checkHead = 0;
+			}
+		} else {
+			if (current->next->item %2 == 0) {
+				last->next = current->next;
+				current->next = current->next->next;
+				last->next->next = NULL;
+				last = last->next;
+				printList(ll);
+			} else {
+				current = current->next;
+				printList(ll);
+			}
+		}
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
