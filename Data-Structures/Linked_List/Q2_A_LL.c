@@ -15,13 +15,13 @@ typedef struct _listnode
 {
 	int item;
 	struct _listnode *next;
-} ListNode;			// You should not change the definition of ListNode
+} ListNode;						// You should not change the definition of ListNode
 
 typedef struct _linkedlist
 {
 	int size;
 	ListNode *head;
-} LinkedList;			// You should not change the definition of LinkedList
+} LinkedList;					// You should not change the definition of LinkedList
 
 
 //////////////////////// function prototypes /////////////////////////////////////
@@ -37,6 +37,30 @@ int removeNode(LinkedList *ll, int index);
 
 
 //////////////////////////// main() //////////////////////////////////////////////
+
+
+
+/* 
+c = 0, 1, 2, 3 for switch statement
+
+1: Insert an integer to the linked list 1:
+	- "Input an integer that you want to add to the linked list"
+	- j = insertNode(&ll1, ll1.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Insert an integer to the linked list 2:
+	- j = insertNode(&ll2, ll2.size, i);
+	- i is the value to be added / j is the index it was added to
+
+3: Create the alternate merged linked list:
+	- alternateMergeLinkedList(&ll1, &ll2);
+	- printList(&ll1);
+	printList(&ll2);
+
+0: Quit:
+	- removeAllItems(&ll1);
+	- removeAllItems(&ll2);
+*/
 
 int main()
 {
@@ -101,9 +125,30 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2)
-{
-    /* add your code here */
+
+/* REQUIREMENTS
+- Inserts nodes of the second list into alternate positions of the first list.
+- The nodes of the second list are only inserted when there are alternate positions available in the first list.
+- Before Merge : LL1 = 1 2 3 / LL2 = 4 5 6 7
+- After Merge : LL1 = 1 4 2 5 3 6 / LL2 = 7
+*/
+void alternateMergeLinkedList(LinkedList *ll1, LinkedList *ll2) {
+    ListNode *current1 = ll1->head;
+	ListNode *current2 = ll2->head;
+
+	if (ll1->head == NULL || ll2->head == NULL) {
+		return;
+	}
+
+	while (current1 != NULL && current2 != NULL) {
+		ll2->head = current2->next;			// ll2's head becomes its second node
+		current2->next = current1->next;
+		current1->next = current2;
+		current1 = current1->next->next;
+		current2 = ll2->head;				// ll2 always removes from head and inserts in ll1
+		ll1->size++;
+		ll2->size--;
+	}
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
