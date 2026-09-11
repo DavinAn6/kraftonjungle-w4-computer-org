@@ -114,21 +114,47 @@ int main()
 - Asks user to input an integer -> inserts into LL in ascending order
 - Do not allow insert of integer if it already exists in LL
 - Return index position where the new item was added
-- If integer could not be added, return -1
+- If integer could not be added (i.e. already exists), return -1
 - Assume sorted linked list or an empty list
-
-
 */
 int insertSortedLL(LinkedList *ll, int item)
 {
-	// Iterate through Linked List until element is bigger than item
-	// Place item right before element and return the index
-	// If iteration ends before finding, then return -1
+	// Iterate through Linked List until next node data is bigger than item
+	// If current node data is same as item -> can't add. return -1
+	// Otherwise -> place item after current node and return the index
 
-	for (int i=0; i < ll->size; i++) {
-		if 
+	ListNode *current = ll->head;
+	ListNode *newNode = malloc(sizeof(ListNode));	// allocate memory
+	newNode->item = item;							// assign item field
+	
+	// 1. Empty Linked List : Create node and set as head
+	// 2. Add to front : First node is greater than item. 
+	// Create node → Point to head → Set new node as head
+	if (current == NULL || current->item > item) {	
+		insertNode(ll, 0, item);
+		return 0;
 	}
-	return -1;
+
+	// 3. Add to middle : Index 1 ~ (size-1) is greater than item. 
+	for (int i=0; i < ll->size; i++) {
+		if (current->next != NULL) {
+			if (current->next->item > item) {
+				if (current->item == item) {	// Check if item is already included
+					return -1;
+				} else {
+					insertNode(ll, i+1, item);
+					i++;
+					return i;
+				}
+			}
+			current = current->next;
+		}
+	}
+
+	// 4. Add to end : All nodes in list are smaller than item. 
+	// Create node and point to NULL → Set current node's next to node
+	insertNode(ll, ll->size, item);
+	return ll->size-1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
