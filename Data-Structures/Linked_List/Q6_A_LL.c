@@ -38,6 +38,19 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer to the linked list:
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Move the largest stored value to the front of the list
+	- moveMaxToFront(&(ll.head));
+
+0: Quit:
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	int c, i, j;
@@ -86,9 +99,34 @@ int main()
 
 ////////////////////////////////////////////////////////////////////////
 
-int moveMaxToFront(ListNode **ptrHead)
-{
-    /* add your code here */
+/* 
+**ptrHead = &(ll.head)
+	ll.head = pointer to the head node / Type ListNode* - a pointer to a ListNode
+	&(ll.head) = pointer to the ll.head variable that points to the head node / Type ListNode** - a pointer to a pointer to a ListNode
+	ptrHead = pointer to the ll.head variable that points to the head node
+	*ptrHead = pointer to the head node
+	**ptrHead = the head node itself
+
+*/
+int moveMaxToFront(ListNode **ptrHead) {
+    ListNode *current = *ptrHead;
+	ListNode *max = *ptrHead;
+	while (current->next != NULL) {	// Traverse from second node to last node
+		if (current->next->item > max->next->item) {
+			max = current;
+		}
+		current = current->next;
+	}
+
+	if (max->next->item < (*ptrHead)->item) {
+		return (*ptrHead)->item;
+	} else {
+		current = max->next;
+		max->next = max->next->next;
+		current->next = *ptrHead;
+		*ptrHead = current;	
+	}
+	return (*ptrHead)->item;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
