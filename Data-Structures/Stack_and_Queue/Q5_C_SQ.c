@@ -48,6 +48,21 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer into the queue
+    - enqueue(&q, i);
+
+2: Recursively reverse the queue
+    - recursiveReverse(&q);
+	- removeAllItemsFromQueue(&q);
+	removeAllItems(&ll);
+
+0: Quit:
+    - removeAllItemsFromQueue(&q);
+	removeAllItems(&ll);
+*/
 int main()
 {
 	int c, i;
@@ -107,9 +122,26 @@ int main()
 
 ////////////////////////////////////////////////////////////
 
-void recursiveReverse(Queue *q)
-{
-/* add your code here */
+/* IDEA
+- Can't reverse using Stack. Cause there would be no difference from Q4_C_SQ.c
+	Also it won't be recursion
+- Can't revere using LinkedList recursion. Cause there would be no difference from Q7_A_LL.c
+- How to reverse using just **Queue + Recursion**
+	- Dequeue the first element -> Sort the rest of the Queue -> Enqueue the first element back to the end
+	- Base case = 2 elements -> Simply dequeue and enqueue the first element
+*/
+void recursiveReverse(Queue *q) {
+	if (q->ll.size < 2) {
+		return;
+	} else {
+		int temp = dequeue(q);
+		if (q->ll.size == 1) {
+			enqueue(q, temp);
+		} else {
+			recursiveReverse(q);
+			enqueue(q, temp);
+		}
+	}
 }
 
 //////////////////////////////////////////////////////////////////
