@@ -48,6 +48,26 @@ void removeAllItems(LinkedList *ll);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+
+/*
+c = 0, 1, 2,  3 for switch statement
+
+1: Insert an integer into the linked list:
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Create the stack from the linked list
+	- createStackFromLinkedList(&ll, &s);
+
+3: Remove even numbers from the stack
+	- removeEvenValues(&s);
+	- removeAllItemsFromStack(&s);
+	- removeAllItems(&ll);
+
+0: Quit:
+	- removeAllItemsFromStack(&s);
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	int c, i;
@@ -102,23 +122,42 @@ int main()
 			printf("Choice unknown;\n");
 			break;
 		}
-
 	}
-
 	return 0;
 }
 
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void createStackFromLinkedList(LinkedList *ll, Stack *s)
-{
-    /* add your code here */
+void createStackFromLinkedList(LinkedList *ll, Stack *s) {
+    if(!isEmptyStack(s)) {
+		removeAllItemsFromStack(s);
+	}
+	ListNode *current = ll->head;
+	while (current != NULL) {
+		push(s, current->item);
+		current = current->next;
+	}
 }
 
-void removeEvenValues(Stack *s)
-{
-	/* add your code here */
+// Only removed odd values from entire stack.
+// If implementing LIFO we would have to remove all even values between odds.
+// No selective removal
+void removeEvenValues(Stack *ptrStack) {
+	LinkedList *ll = &ptrStack->ll;
+	ListNode *current = ll->head;
+	Stack *newStack = malloc(sizeof(Stack));
+	(*newStack).ll.head = NULL;
+	(*newStack).ll.size = 0;
+
+	while (current != NULL) {
+		if (current->item % 2 != 0) {
+			push(newStack, current->item);
+		}
+		current = current->next;
+	}
+	*ptrStack=*newStack;
+	printf("test");
 }
 
 //////////////////////////////////////////////////////////////////////////////////
