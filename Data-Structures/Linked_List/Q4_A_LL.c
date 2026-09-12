@@ -116,7 +116,6 @@ void moveEvenItemsToBack(LinkedList *ll) {
 				current = current->next;
 				last = last->next;
 				last->next = NULL;
-				printList(ll);
 			} else {
 				checkHead = 0;
 			}
@@ -126,10 +125,8 @@ void moveEvenItemsToBack(LinkedList *ll) {
 				current->next = current->next->next;
 				last->next->next = NULL;
 				last = last->next;
-				printList(ll);
 			} else {
 				current = current->next;
-				printList(ll);
 			}
 		}
 	}
