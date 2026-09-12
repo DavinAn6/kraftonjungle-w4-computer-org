@@ -8,6 +8,7 @@ Purpose: Implementing the required functions for Question 7 */
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define MIN_INT -1000
 
@@ -50,6 +51,22 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Enter a string
+    - "Enter expressions without spaces to check whether it is balanced or not:"
+
+2: Check whether expressions comprised of the characters ()[]{} is balanced:
+    if(balanced(str))
+		printf("not balanced!\n");
+	else
+		printf("balanced!\n");
+	break;
+
+0: Quit:
+	break;
+*/
 int main()
 {
 	char ch, str[256];
@@ -102,9 +119,73 @@ int main()
 }
 
 ////////////////////////////////////////////////////////////
-int balanced(char *expression)
-{
-/* add your code here */
+
+
+/* 
+REQUIREMENT
+	- Determine if an expression comprised of the characters ()[]{} is balanced.
+	- If balanced, return 0. If not balanced, return 1.
+
+NOTE
+	- You can create a String using a character pointer (String Literals)
+		- char *greetings = "Hello";	
+	- If we pop from an empty stack, we get MIN_INT = -1000
+
+IDEA
+	- Will use stack to add characters one by one
+	- If the previously added character and the currently adding character are a pair 
+	(i.e. () {} []), then remove the previously added character.
+
+	- Only problem is the stack here can only save ints, not chars
+	- We could have internal system for identifying the chars using numbers
+		( = 1 / ) = 2
+		{ = 10 / } = 20
+		[ = 100 / ] = 200
+
+*/
+int balanced(char *expression) {
+	Stack *expressionStack = malloc(sizeof(Stack));
+	(*expressionStack).ll.size = 0;
+	(*expressionStack).ll.head = NULL;
+	int stackPop = 0;
+
+	for (int i = 0; i < strlen(expression); i++) {
+		switch (expression[i]) {
+			case '(':
+				push(expressionStack, 1);
+				break;
+			case '{':
+				push(expressionStack, 2);
+				break;
+			case '[':
+				push(expressionStack, 3);
+				break;
+			case ')':
+				stackPop = pop(expressionStack);
+				if (stackPop != 1) {
+					return 1;
+				}
+				break;
+			case '}':
+				stackPop = pop(expressionStack);
+				if (stackPop != 2) {
+					return 1;
+				}
+				break;
+			case ']':
+				stackPop = pop(expressionStack);
+				if (stackPop != 3) {
+					return 1;
+				}
+				break;				
+		}
+	}
+	if (isEmptyStack(expressionStack)) {
+		return 0;
+	} else {
+		return 1;
+	}
+	
 }
 
 ////////////////////////////////////////////////////////////
