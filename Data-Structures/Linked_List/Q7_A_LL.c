@@ -38,6 +38,19 @@ int removeNode(LinkedList *ll, int index);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+/*
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer to the linked list:
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Move the largest stored value to the front of the list
+	- moveMaxToFront(&(ll.head));
+
+0: Quit:
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	LinkedList ll;
@@ -85,9 +98,18 @@ int main()
 
 ////////////////////////////////////////////////////////////////////////
 
-void RecursiveReverse(ListNode **ptrHead)
-{
-	/* add your code here */
+void RecursiveReverse(ListNode **ptrHead) {
+	ListNode *last = *ptrHead;
+
+	if ((*ptrHead)->next->next != NULL) {		// Recurse sublist until there are only two nodes
+		RecursiveReverse(&(*ptrHead)->next);
+	}
+	while (last->next != NULL) {
+		last = last->next;
+	}
+	last->next = *ptrHead;
+	*ptrHead = (*ptrHead)->next;
+	last->next->next = NULL;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
