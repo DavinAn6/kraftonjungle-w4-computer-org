@@ -48,6 +48,26 @@ void removeAllItems(LinkedList *ll);
 
 //////////////////////////// main() //////////////////////////////////////////////
 
+
+/*
+c = 0, 1, 2,  3 for switch statement
+
+1: Insert an integer into the linked list:
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Create the queue from the linked list:
+	- createQueueFromLinkedList(&ll, &q);
+
+3: Remove odd numbers from the queue:
+	- removeEvenValues(&s);
+	- removeAllItemsFromStack(&s);
+	- removeAllItems(&ll);
+
+0: Quit:
+	- removeAllItemsFromStack(&s);
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	int c, i;
@@ -114,14 +134,35 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void createQueueFromLinkedList(LinkedList *ll, Queue *q)
-{
-	/* add your code here */
+void createQueueFromLinkedList(LinkedList *ll, Queue *q) {
+	// if (q->ll.size != 0)
+	if (!isEmptyQueue(q)) {
+		removeAllItemsFromQueue(q);
+	}
+	ListNode *current = ll->head;
+	while (current != NULL) {
+		enqueue(q, current->item);
+		current = current->next;
+	}
 }
 
-void removeOddValues(Queue *q)
-{
-	/* add your code here */
+
+// Implemented adherance to FIFO(First In First Out)
+void removeOddValues(Queue *ptrQueue) {
+	LinkedList *ll = &ptrQueue->ll;
+	ListNode *current = ll->head;
+	Queue *newQ = malloc(sizeof(Queue));
+	(*newQ).ll.head = NULL;
+	(*newQ).ll.size = 0;
+
+	while (current != NULL) {
+		if (current->item % 2 == 0) {
+			enqueue(newQ, current->item);
+		}
+		current = current->next;
+	}
+	*ptrQueue=*newQ;
+	printf("test");
 }
 
 //////////////////////////////////////////////////////////////////////////////////
