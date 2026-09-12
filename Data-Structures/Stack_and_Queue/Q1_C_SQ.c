@@ -146,8 +146,9 @@ void createQueueFromLinkedList(LinkedList *ll, Queue *q) {
 	}
 }
 
-
-// Implemented adherance to FIFO(First In First Out)
+// Only removed odd values from entire queue.
+// If implementing FIFO we would have to remove all even values between odds.
+// No selective removal
 void removeOddValues(Queue *ptrQueue) {
 	LinkedList *ll = &ptrQueue->ll;
 	ListNode *current = ll->head;
