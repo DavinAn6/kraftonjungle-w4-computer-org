@@ -47,6 +47,18 @@ void removeAllItems(LinkedList *ll);
 
 //////////////////////////////////////////////////////////////////////////////////////
 
+/*
+c = 0, 1, 2,  3 for switch statement
+
+1: Insert an integer into the stack
+	- push(&s, value);
+
+2: Check the stack is pairwise consecutive
+	- isStackPairwiseConsecutive(&s)
+
+0: Quit:
+	- removeAllItems(&ll);
+*/
 int main()
 {
     int c, value;
@@ -101,9 +113,24 @@ int main()
 
 /////////////////////////////////////////////////////////////////////////////////
 
-int isStackPairwiseConsecutive(Stack *s)
-{
-  /* add your code here */
+// Pairs of numbers should differ only by 1 (descending or ascending doesn't matter)
+// If stack has odd number, we will assume the last leftover element doesn't need a pair
+int isStackPairwiseConsecutive(Stack *s) {
+	LinkedList *ll = &s->ll;
+	ListNode *current = ll->head;
+
+	int i = 0;
+	int size = ll->size%2==0 ? ll->size : ll->size-1;
+	while (i < size) {
+		if (i%2 == 0) {
+			if ((current->item - current->next->item) != 1) {
+				return 0;
+			}
+		}
+		current = current->next;
+		i++;
+	}
+	return 1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
