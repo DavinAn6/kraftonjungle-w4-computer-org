@@ -59,6 +59,18 @@ void removeAllItems(LinkedList *ll);
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
 
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer into the queue
+    - enqueue(&q, value);
+
+2: Reverse the queue
+    - reverse(&q);
+
+0: Quit:
+    - removeAllItems(&(q.ll));
+*/
 int main()
 {
     int c, value;
@@ -110,9 +122,28 @@ int main()
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-void reverse(Queue *q)
-{
-/* add your code here */
+/* 
+- Reverse a Queue using a Stack
+- Only use push, pop when insert, removing from Stack
+- Only use enqueue, dequeue when insert, removing from Queue
+
+Idea
+	- Dequeue each queue element and push into stack
+	- Make stack's linkedlist the queue's linkedlist
+
+*/
+void reverse(Queue *pntrQueue) {
+	Stack *newStack = malloc(sizeof(Stack));
+	(*newStack).ll.head = NULL;
+	(*newStack).ll.size = 0;
+	(*newStack).ll.tail = NULL;
+
+	while (!isEmptyQueue(pntrQueue)) {
+		push(newStack, dequeue(pntrQueue));
+	}
+
+	(*pntrQueue).ll = (*newStack).ll;
+	printList(&((*pntrQueue).ll));
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
