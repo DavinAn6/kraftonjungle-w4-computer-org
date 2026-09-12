@@ -36,6 +36,19 @@ int removeNode(LinkedList *ll, int index);
 
 ///////////////////////////// main() /////////////////////////////////////////////
 
+/* 
+c = 0, 1, 2 for switch statement
+
+1: Insert an integer to the linked list:
+	- j = insertNode(&ll, ll.size, i);
+	- i is the value to be added / j is the index it was added to
+
+2: Split the linked list into two linked lists, frontList and backList:
+	- frontBackSplitLinkedList(&ll, &resultFrontList, &resultBackList);
+
+0: Quit:
+	- removeAllItems(&ll);
+*/
 int main()
 {
 	int c, i;
@@ -100,9 +113,32 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
-void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList)
-{
-	/* add your code here */
+void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList) {
+	
+	ListNode *current = ll->head;
+	int i = 0;
+	int len = ll->size;
+	int half = (len%2 == 0) ? len/2 : len/2+1;
+
+	while (i < len) {
+		if (i < half) {
+			insertNode(resultFrontList, i, current->item);
+		} else {
+			insertNode(resultBackList, i-half, current->item);
+		}
+		current = current->next;
+		i++;
+	}
+
+
+
+
+	for (int i = 0; i < ll->size/2; i++) {
+
+	}
+
+
+
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
