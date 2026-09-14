@@ -116,7 +116,6 @@ int main()
 - Return index position where the new item was added
 - If integer could not be added (i.e. already exists), return -1
 - Assume sorted linked list or an empty list
-
 	Case 1 : Empty List
 	Case 2 : Front Insert
 	Case 3 : Middle Insert
@@ -125,22 +124,29 @@ int main()
 */
 int insertSortedLL(LinkedList *ll, int item) {
 	ListNode *current = ll->head;
-	
+
 	if (current == NULL || current->item > item) {
-		insertNode(ll, 0, item);
+		insertNode(ll, 0, item); // No use of findNode for index==0, keep as is
 		return 0;
 	}
-
 	for (int i=0; i < ll->size; i++) {
 		if (current->item == item) {
 			return -1;
 		}
 		if (current->next == NULL || current->next->item > item) {
-			insertNode(ll, i+1, item);
+			// Can use insertNode function here
+			// But pointer manipulation is cheaper
+			// insertNode uses findNode which is O(n)
+			ListNode *insert = malloc(sizeof(ListNode));
+			insert->item = item;
+			insert->next = current->next;
+			current->next = insert;
+			ll->size++;
 			return i+1;
 		}
 		current = current->next;
 	}
+	return -1;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
