@@ -40,14 +40,14 @@ int removeNode(LinkedList *ll, int index);
 c = 0, 1, 2 for switch statement
 
 1: Insert an integer to the linked list:
-	- j = insertNode(&ll, ll.size, i);
-	- i is the value to be added / j is the index it was added to
+	j = insertNode(&ll, ll.size, i);
+	i is the value to be added / j is the index it was added to
 
 2: Split the linked list into two linked lists, frontList and backList:
-	- frontBackSplitLinkedList(&ll, &resultFrontList, &resultBackList);
+	frontBackSplitLinkedList(&ll, &resultFrontList, &resultBackList);
 
 0: Quit:
-	- removeAllItems(&ll);
+	removeAllItems(&ll);
 */
 int main()
 {
@@ -114,31 +114,52 @@ int main()
 //////////////////////////////////////////////////////////////////////////////////
 
 void frontBackSplitLinkedList(LinkedList *ll, LinkedList *resultFrontList, LinkedList *resultBackList) {
-	
+	if (ll->head == NULL) {return;}
 	ListNode *current = ll->head;
+	ListNode *frontListHead = NULL;
+	ListNode *frontListTail;
+	ListNode *backListHead = NULL;
+	ListNode *backListTail;
 	int i = 0;
 	int len = ll->size;
-	int half = (len%2 == 0) ? len/2 : len/2+1;
+	int half = (len + 1)/2;
 
 	while (i < len) {
 		if (i < half) {
-			insertNode(resultFrontList, i, current->item);
+			if (frontListHead == NULL) {
+				frontListHead = current;
+				frontListTail = current;
+			} else {
+				frontListTail->next = current;
+				frontListTail = frontListTail->next;
+			}
+			resultFrontList->size++;
 		} else {
-			insertNode(resultBackList, i-half, current->item);
+			if (backListHead == NULL) {
+				backListHead = current;
+				backListTail = current;
+			} else {
+				backListTail->next = current;
+				backListTail = backListTail->next;
+			}
+			resultBackList->size++;
 		}
 		current = current->next;
 		i++;
 	}
+	ll->head = NULL;
+	ll->size = 0;
+	frontListTail->next = NULL;
+	resultFrontList->head = frontListHead;
 
-
-
-
-	for (int i = 0; i < ll->size/2; i++) {
-
+	// Check if backlist exists. If ll size is 1, might not exist.
+	if (backListHead != NULL) {
+		backListTail->next = NULL;
+		resultBackList->head = backListHead;
+	} else {
+		resultBackList->head = NULL;
+		// already NULL by init, but explicit is safer
 	}
-
-
-
 }
 
 ///////////////////////////////////////////////////////////////////////////////////
