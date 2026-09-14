@@ -42,14 +42,15 @@ int removeNode(LinkedList *ll, int index);
 c = 0, 1, 2 for switch statement
 
 1: Insert an integer to the linked list:
-	- j = insertNode(&ll, ll.size, i);
-	- i is the value to be added / j is the index it was added to
+	j = insertNode(&ll, ll.size, i);
+	i is the value to be added / j is the index it was added to
 
 2: Move the largest stored value to the front of the list
-	- moveMaxToFront(&(ll.head));
+	moveMaxToFront(&(ll.head));
+	removeAllItems(&ll);
 
 0: Quit:
-	- removeAllItems(&ll);
+	removeAllItems(&ll);
 */
 int main()
 {
@@ -100,33 +101,40 @@ int main()
 ////////////////////////////////////////////////////////////////////////
 
 /* 
-**ptrHead = &(ll.head)
+**	
+POINTERS
+	ptrHead = &(ll.head)
 	ll.head = pointer to the head node / Type ListNode* - a pointer to a ListNode
 	&(ll.head) = pointer to the ll.head variable that points to the head node / Type ListNode** - a pointer to a pointer to a ListNode
 	ptrHead = pointer to the ll.head variable that points to the head node
 	*ptrHead = pointer to the head node
 	**ptrHead = the head node itself
 
+ASSUMPTIONS
+	1. Return value is 0 if list is empty
+	2. If there are duplicate max values, the one with the first relative poisition will be moved
 */
 int moveMaxToFront(ListNode **ptrHead) {
+	if (*ptrHead == NULL) {return 0;}
     ListNode *current = *ptrHead;
+	ListNode *prev = NULL;
 	ListNode *max = *ptrHead;
-	while (current->next != NULL) {	// Traverse from second node to last node
-		if (current->next->item > max->next->item) {
+	ListNode *maxPrev = NULL;
+
+	while (current != NULL) {
+		if (current->item > max->item) {
 			max = current;
+			maxPrev = prev;
 		}
+		prev = current;
 		current = current->next;
 	}
-
-	if (max->next->item < (*ptrHead)->item) {
-		return (*ptrHead)->item;
-	} else {
-		current = max->next;
-		max->next = max->next->next;
-		current->next = *ptrHead;
-		*ptrHead = current;	
+	if (maxPrev != NULL) {	// Max value is not at head. If max is at head, list need not be changed.
+		maxPrev->next = max->next;
+		max->next = *ptrHead;
+		*ptrHead = max;
 	}
-	return (*ptrHead)->item;
+	return 1;
 }
 
 //////////////////////////////////////////////////////////////////////////////////
