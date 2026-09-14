@@ -42,15 +42,14 @@ int removeNode(LinkedList *ll, int index);
 c = 0, 1, 2 for switch statement
 
 1: Insert an integer to the linked list:
-	- "Input an integer that you want to add to the linked list"
-	- j = insertNode(&ll, ll.size, i);
-	- i is the value to be added / j is the index it was added to
+	j = insertNode(&ll, ll.size, i);
+	i is the value to be added / j is the index it was added to
 
 2: Move all even integers to the back of the linked list:
-	- moveOddItemsToBack(&ll);
+	moveEvenItemsToBack(&ll);
 
 0: Quit:
-	- removeAllItems(&ll);
+	removeAllItems(&ll);
 */
 int main()
 {
@@ -99,35 +98,41 @@ int main()
 
 //////////////////////////////////////////////////////////////////////////////////
 
+// Same as Q3_A_LL.c
 void moveEvenItemsToBack(LinkedList *ll) {
+	if (ll->head == NULL) {return;}
 	ListNode *current = ll->head;
-	ListNode *last = ll->head;
-	while (last->next != NULL) {
-		last = last->next;
+	ListNode *evenHead = NULL;
+	ListNode *evenTail = NULL;
+	ListNode *oddHead = NULL;
+	ListNode *oddTail = NULL;
+
+	while (current != NULL) {
+		if (current->item % 2 == 1) { 	// Item is odd
+			if (oddHead == NULL) {		// First odd element
+				oddHead = current;
+				oddTail = current;
+			} else {
+				oddTail->next = current;
+				oddTail = current;
+			}
+		} else {						// Item is even
+			if (evenHead == NULL) {		// First even element
+				evenHead = current;
+				evenTail = current;
+			} else {
+				evenTail->next = current;
+				evenTail = current;
+			}
+		}
+		current = current->next;
 	}
 
-	int checkHead = 1;
-
-	for (int i = 0; i < ll->size; i++) {
-		if (checkHead == 1) {
-			if (current->item % 2 == 0) {
-				last->next = current;
-				ll->head = current->next;
-				current = current->next;
-				last = last->next;
-				last->next = NULL;
-			} else {
-				checkHead = 0;
-			}
-		} else {
-			if (current->next->item %2 == 0) {
-				last->next = current->next;
-				current->next = current->next->next;
-				last->next->next = NULL;
-				last = last->next;
-			} else {
-				current = current->next;
-			}
+	if (oddHead != NULL) {		// Even elements exist. Head won't point to NULL
+		ll->head = oddHead;
+		oddTail->next = evenHead;
+		if (evenHead != NULL) {
+			evenTail->next = NULL;
 		}
 	}
 }
