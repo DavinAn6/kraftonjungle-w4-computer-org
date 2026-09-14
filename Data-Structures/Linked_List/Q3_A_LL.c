@@ -42,15 +42,14 @@ int removeNode(LinkedList *ll, int index);
 c = 0, 1, 2 for switch statement
 
 1: Insert an integer to the linked list:
-	- "Input an integer that you want to add to the linked list"
-	- j = insertNode(&ll, ll.size, i);
-	- i is the value to be added / j is the index it was added to
+	j = insertNode(&ll, ll.size, i);
+	i is the value to be added / j is the index it was added to
 
 2: Move all odd integers to the back of the linked list:
-	- moveOddItemsToBack(&ll);
+	moveOddItemsToBack(&ll);
 
 0: Quit:
-	- removeAllItems(&ll);
+	removeAllItems(&ll);
 */
 int main()
 {
@@ -106,30 +105,39 @@ int main()
 	- Output : 2, 4, 18, 3, 7, 15
 */
 void moveOddItemsToBack(LinkedList *ll) {
+	if (ll->head == NULL) {return;}
 	ListNode *current = ll->head;
-	ListNode *last = ll->head;
-	while (last->next != NULL) {
-		last = last->next;
+	ListNode *evenHead = NULL;
+	ListNode *evenTail = NULL;
+	ListNode *oddHead = NULL;
+	ListNode *oddTail = NULL;
+
+	while (current != NULL) {
+		if (current->item % 2 == 1) { 	// Item is odd
+			if (oddHead == NULL) {		// First odd element
+				oddHead = current;
+				oddTail = current;
+			} else {
+				oddTail->next = current;
+				oddTail = current;
+			}
+		} else {						// Item is even
+			if (evenHead == NULL) {		// First even element
+				evenHead = current;
+				evenTail = current;
+			} else {
+				evenTail->next = current;
+				evenTail = current;
+			}
+		}
+		current = current->next;
 	}
 
-	// Check if head is odd first
-	if (current->item % 2 == 1) {
-		last->next = current;
-		ll->head = current->next;
-		current->next = NULL;
-		last = last->next;
-	}
-
-	for (int i = 1; i < ll->size-1; i++) {	
-		// Only iterates until second to last node.
-		// Last node need not be checked since it's already last
-		if (current->next->item % 2 == 1) {
-			last->next = current->next;
-			current->next = current->next->next;
-			last->next->next = NULL;	
-			last = last->next;
-		} else {
-			current = current->next;
+	if (evenHead != NULL) {		// Even elements exist. Head won't point to NULL
+		ll->head = evenHead;
+		evenTail->next = oddHead;
+		if (oddHead != NULL) {
+			oddTail->next = NULL;
 		}
 	}
 }
