@@ -44,22 +44,21 @@ int removeNode(LinkedList *ll, int index);
 c = 0, 1, 2, 3 for switch statement
 
 1: Insert an integer to the linked list 1:
-	- "Input an integer that you want to add to the linked list"
-	- j = insertNode(&ll1, ll1.size, i);
-	- i is the value to be added / j is the index it was added to
+	j = insertNode(&ll1, ll1.size, i);
+	i is the value to be added / j is the index it was added to
 
 2: Insert an integer to the linked list 2:
-	- j = insertNode(&ll2, ll2.size, i);
-	- i is the value to be added / j is the index it was added to
+	j = insertNode(&ll2, ll2.size, i);
+	i is the value to be added / j is the index it was added to
 
 3: Create the alternate merged linked list:
-	- alternateMergeLinkedList(&ll1, &ll2);
-	- printList(&ll1);
+	alternateMergeLinkedList(&ll1, &ll2);
+	printList(&ll1);
 	printList(&ll2);
 
 0: Quit:
-	- removeAllItems(&ll1);
-	- removeAllItems(&ll2);
+	removeAllItems(&ll1);
+	removeAllItems(&ll2);
 */
 
 int main()
